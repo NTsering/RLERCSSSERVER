@@ -1494,7 +1494,7 @@ Stadium::movePlayer( const Side side,
                      const double * ang,
                      const PVector * vel )
 {
-    std::cout << "Move Players" << std::endl;
+    // std::cout << "Move Players" << std::endl;
     if ( unum < 1 || MAX_PLAYER < unum )
     {
         if ( ServerParam::instance().verboseMode() )
@@ -2340,8 +2340,8 @@ Stadium::doRecvFromClients()
     Take parameter as path to the slice path. ??Todo: Use the path as an input from main.
 */
 bool Stadium::updateBallParam(){
-    double posx, posy;
-    double velx, vely;
+    double posx = 0.0, posy = 0.0;
+    double velx = 0.0, vely = 0.0;
 
     std::ifstream f("slice.json");
     if (f) {
@@ -2363,6 +2363,8 @@ bool Stadium::updateBallParam(){
 }
 
 
+
+
 /*
     Update Player Parameter given to the input of the Simulator Server.
 */
@@ -2370,8 +2372,9 @@ bool Stadium::updatePlayersParam( ){
 
     std::cout << "updatePlayersParam" << std::endl;
 
-    double posx, posy;
-    double velx, vely;
+    double posx = 0.0, posy = 0.0;
+    double velx = 0.0, vely = 0.0;
+    double b_angle = 0.0;
     int unum;
     Side side;
 
@@ -2387,18 +2390,20 @@ bool Stadium::updatePlayersParam( ){
 
             for(const auto& element : j["players"]["player"]){
 
-                // std::cout << element << std::endl;
+                std::cout << element ["side"] << element ["unum"] <<  "Moved" << std::endl;
                 unum = element["unum"];
                 side = ( "r" == element["side"])? RIGHT:LEFT;
                 posx = element["posx"];
                 posy = element["posy"];
                 velx = element["velx"];
                 vely = element["vely"];
+                b_angle = element["bangle"];
                 PVector vel(velx, vely);
+                PVector pos(posx, posy);
 
                 movePlayer(side,
                     unum,
-                    PVector(posx, posy),
+                    pos,
                     NULL,
                     &vel) ;
                 
