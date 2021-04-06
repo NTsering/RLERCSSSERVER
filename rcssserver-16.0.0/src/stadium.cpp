@@ -76,6 +76,7 @@ using json = nlohmann::json;
 
 Stadium::Stadium()
     : M_alive(true),
+      hasMatchStarted(false),
       M_logger(*this),
       M_ball(NULL),
       M_players(MAX_PLAYER * 2, static_cast<Player *>(0)),
@@ -243,7 +244,7 @@ bool Stadium::init()
 
     //std::cout << "Simulator Random Seed: " << ServerParam::instance().randomSeed() << std::endl;
 
-    M_game_over_wait = ServerParam::instance().gameOverWait();
+    M_game_over_wait = 1; //ServerParam::instance().gameOverWait();
 
     // we create the result savers now, so that if there are any
     // errors creating them, it will be reported before
@@ -338,7 +339,7 @@ bool Stadium::init()
 
     changePlayMode(PM_BeforeKickOff);
 
-    M_kick_off_wait = std::max(0, ServerParam::instance().kickOffWait());
+    M_kick_off_wait = 5; //std::max(0, ServerParam::instance().kickOffWait());
     M_connect_wait = std::max(0, ServerParam::instance().connectWait());
 
     if (!M_logger.open())
@@ -372,6 +373,7 @@ void Stadium::checkAutoMode()
             if (M_kick_off_wait > 0)
             {
                 --M_kick_off_wait;
+                std::cout <<  M_kick_off_wait<< std::endl;
             }
         }
         else
@@ -413,6 +415,8 @@ void Stadium::checkAutoMode()
             if (M_game_over_wait > 0)
             {
                 --M_game_over_wait;
+                std::cout <<  M_game_over_wait;
+
             }
 
             if (M_game_over_wait <= 0)
@@ -423,7 +427,7 @@ void Stadium::checkAutoMode()
         }
         else
         {
-            M_game_over_wait = ServerParam::instance().gameOverWait();
+            M_game_over_wait = 1; //ServerParam::instance().gameOverWait();
         }
     }
 }
@@ -1450,6 +1454,7 @@ bool Stadium::movePlayerRLE(const Side side,
     if (ang)
     {
         new_angle = *ang;
+        // std::cout << "Body Angle: "<< new_angle ;
     }
 
     if(neck){
@@ -2213,7 +2218,7 @@ bool Stadium::updateBallParam()
     double posx = 0.0, posy = 0.0;
     double velx = 0.0, vely = 0.0;
 
-    std::ifstream f("slice.json");
+    std::ifstream f("../../slice.json");
     if (f)
     {
         json j;
@@ -2227,6 +2232,7 @@ bool Stadium::updateBallParam()
         }
     }
     moveBall(PVector(posx, posy), PVector(velx, vely));
+
 
     f.close();
 
@@ -2247,7 +2253,7 @@ bool Stadium::updatePlayersParam()
     int unum;
     Side side;
 
-    std::ifstream f("slice.json");
+    std::ifstream f("../../slice.json");
     if (f)
     {
         json j;
@@ -2262,7 +2268,7 @@ bool Stadium::updatePlayersParam()
             for (const auto &element : j["players"]["player"])
             {
 
-                std::cout << element["side"] << element["unum"] << "Moved" << std::endl;
+                // std::cout << element["side"] << element["unum"] << "Moved" << std::endl;
                 unum = element["unum"];
                 side = ("r" == element["side"]) ? RIGHT : LEFT;
                 posx = element["posx"];
@@ -2328,14 +2334,21 @@ void Stadium::doNewSimulatorStep()
     startTeams();
     checkAutoMode();
 
-    if (M_time == 10)  // Assuming that 10 cycles is taken by any team at most to kick the first ball
+    if (playmode() == PM_PlayOn && !hasMatchStarted)  // Check if the playmode is ON and set the flag.
     {
 
         // Look here: Place the Ball here.
         updateBallParam();
 
+        // std::cout<< "Ball Pos(x,y):" <<M_ball->pos().x <<","<<M_ball->pos().y;
+
         // Look here: Place the Player here.
         updatePlayersParam();
+
+        
+
+        
+        hasMatchStarted = true;
     }
 
     if (M_logger.isTextLogOpen() && ServerParam::instance().profile())
@@ -2344,7 +2357,7 @@ void Stadium::doNewSimulatorStep()
         M_logger.writeProfile(tv_start, tv_end, "SIM");
     }
 
-    if(M_time == 60) // Assuming that 50 (10 cycles reduced for starting lags) cycles is taken at most by a team to score a goal from a shoot situation
+    if(M_time == 45) // Assuming that 40 (~5 cycles reduced for starting lags) cycles is taken at most by a team to score a goal from a shoot situation
     {
         changePlayMode(PM_TimeOver);
     }

@@ -319,9 +319,9 @@ const int ServerParam::CLANG_DEL_WIN = 1;
 const int ServerParam::CLANG_RULE_WIN = 1;
 
 const bool ServerParam::S_AUTO_MODE = false;
-const int ServerParam::S_KICK_OFF_WAIT = 100;
+const int ServerParam::S_KICK_OFF_WAIT = 10;
 const int ServerParam::S_CONNECT_WAIT = 300;
-const int ServerParam::S_GAME_OVER_WAIT = 100;
+const int ServerParam::S_GAME_OVER_WAIT = 10;
 
 const std::string ServerParam::S_TEAM_L_START = "";
 const std::string ServerParam::S_TEAM_R_START = "";
@@ -1401,9 +1401,9 @@ ServerParam::setDefaults()
     M_clang_rule_win = CLANG_RULE_WIN;
 
     M_auto_mode = S_AUTO_MODE;
-    M_kick_off_wait = S_KICK_OFF_WAIT;
+    M_kick_off_wait = 10; // S_KICK_OFF_WAIT; Still not working? M_kick_off_wait is taking 100 as a defult, Why?
     M_connect_wait = S_CONNECT_WAIT;
-    M_game_over_wait = S_GAME_OVER_WAIT;
+    M_game_over_wait = 10; // S_GAME_OVER_WAIT; Same goes for M_game_over_wait??
 
     M_team_l_start = S_TEAM_L_START;
     M_team_r_start = S_TEAM_R_START;

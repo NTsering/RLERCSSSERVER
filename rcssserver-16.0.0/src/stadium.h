@@ -90,6 +90,7 @@ protected:
 
 protected:
     bool M_alive;
+    bool hasMatchStarted;
 
     rcss::net::UDPSocket M_player_socket;
     rcss::net::UDPSocket M_offline_coach_socket;

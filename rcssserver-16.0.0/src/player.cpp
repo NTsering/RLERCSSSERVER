@@ -2665,6 +2665,6 @@ void Player::place( const PVector & pos, const double & angle, const double & ne
     M_vel = vel;
     M_accel = accel;
 
-    // std::cout << "Player::place (x,y) "<< M_pos.x << ", " << M_pos.y ;
+    // std::cout << "Player::place body "<< M_angle_body << " neck" << M_angle_neck ;
 
 }
