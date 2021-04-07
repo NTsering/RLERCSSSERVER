@@ -2231,7 +2231,8 @@ bool Stadium::updateBallParam()
             vely = j["ball"]["vely"];
         }
     }
-    moveBall(PVector(posx, posy), PVector(velx, vely));
+    // moveBall(PVector(posx, posy), PVector(velx, vely));
+    moveBall(PVector(posx, posy), PVector(0.0, 0.0));
 
 
     f.close();
@@ -2357,7 +2358,7 @@ void Stadium::doNewSimulatorStep()
         M_logger.writeProfile(tv_start, tv_end, "SIM");
     }
 
-    if(M_time == 45) // Assuming that 40 (~5 cycles reduced for starting lags) cycles is taken at most by a team to score a goal from a shoot situation
+    if(M_time == 45 || playmode() == PM_AfterGoal_Left || playmode() == PM_AfterGoal_Right ) // Assuming that 40 (~5 cycles reduced for starting lags) cycles is taken at most by a team to score a goal from a shoot situation
     {
         changePlayMode(PM_TimeOver);
     }
