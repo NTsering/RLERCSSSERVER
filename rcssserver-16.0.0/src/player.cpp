@@ -1604,6 +1604,10 @@ Player::move( double x,
     ++M_move_count;
 }
 
+void Player::setViewAngle(double angle){
+    M_visible_angle = angle; 
+}
+
 void
 Player::change_view( rcss::pcom::VIEW_WIDTH viewWidth,
                      rcss::pcom::VIEW_QUALITY viewQuality )

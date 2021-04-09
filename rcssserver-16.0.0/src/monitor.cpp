@@ -105,8 +105,8 @@ void
 Monitor::parseMsg( char * msg,
                    const size_t & len )
 {
-    std::cout<< "Monitor::parseMsg: ";
-    std::cout<< msg << std::endl;
+    // std::cout<< "Monitor::parseMsg: ";
+    // std::cout<< msg << std::endl;
     char * str = msg;
     if ( str[ len - 1 ] != 0 )
     {
