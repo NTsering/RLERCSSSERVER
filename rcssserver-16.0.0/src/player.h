@@ -313,6 +313,8 @@ public:
     const double & visibleAngle() const { return M_visible_angle; }
     rcss::pcom::VIEW_WIDTH viewWidth() const { return M_view_width; }
 
+
+
     //
     // audio sensor
     //
@@ -421,6 +423,8 @@ public:
     // 2011-05-14 akiyama
     void doLongKick();
 
+    void setViewAngle(double angle);
+
 protected:
 
     virtual
@@ -464,6 +468,7 @@ private:
     void clang( int min, int max);
     void ear( bool on, rcss::pcom::TEAM team_side, std::string team_name, rcss::pcom::EAR_MODE mode );
     void synch_see();
+    
 
 };
 
