@@ -1462,8 +1462,8 @@ bool Stadium::movePlayerRLE(const Side side,
     }
 
     player->place(pos,
-                  new_angle,
-                  new_neck,
+                  Deg2Rad(new_angle),
+                  Deg2Rad(new_neck),
                   new_vel,
                   new_accel);
 
@@ -2231,13 +2231,33 @@ bool Stadium::updateBallParam()
             vely = j["ball"]["vely"];
         }
     }
-    // moveBall(PVector(posx, posy), PVector(velx, vely));
-    moveBall(PVector(posx, posy), PVector(0.0, 0.0));
+    moveBall(PVector(posx, posy), PVector(velx, vely));
+    // moveBall(PVector(posx, posy), PVector(0.0, 0.0));
 
 
     f.close();
 
     return true;
+}
+
+
+
+void Stadium::checkPlayerParam(){
+
+    std::cout << "Ball " << M_ball->pos()<< std::endl;
+
+    const PlayerCont::iterator end = M_players.end();
+    for (PlayerCont::iterator p = M_players.begin();
+         p != end;
+         ++p)
+    {
+        std::cout << "Player " << (*p) -> side() << " " << (*p) -> unum() ;
+        std::cout << "\tBody : "<< Rad2Deg((*p) -> angleBodyCommitted());
+        std::cout << "\tNeck : "<< Rad2Deg((*p) -> angleNeckCommitted());
+        std::cout << "\tView : "<< Rad2Deg((*p) -> visibleAngle());
+        std::cout<< std::endl;
+    }
+    
 }
 
 /*
@@ -2250,7 +2270,8 @@ bool Stadium::updatePlayersParam()
 
     double posx = 0.0, posy = 0.0;
     double velx = 0.0, vely = 0.0;
-    double b_angle = 0.0, n_angle = 0.0;
+    double bAngle = 0.0, nAngle = 0.0;
+    double viewAngle = 0.0;
     int unum;
     Side side;
 
@@ -2276,17 +2297,23 @@ bool Stadium::updatePlayersParam()
                 posy = element["posy"];
                 velx = element["velx"];
                 vely = element["vely"];
-                b_angle = element["bangle"];
-                n_angle = element["hangle"];
+                bAngle = element["bangle"];
+                nAngle = element["hangle"];
+                viewAngle = element["viewWidth"];
                 PVector vel(velx, vely);
                 PVector pos(posx, posy);
 
                 movePlayerRLE(side,
                            unum,
                            pos,
-                           &b_angle,
-                           &n_angle,
+                           &bAngle,
+                           &nAngle,
                            &vel);
+
+                Player *p = getPlayer(side, unum);
+                p -> setViewAngle(Deg2Rad(viewAngle));
+
+
             }
         }
         else
@@ -2346,8 +2373,8 @@ void Stadium::doNewSimulatorStep()
         // Look here: Place the Player here.
         updatePlayersParam();
 
-        
 
+        checkPlayerParam();
         
         hasMatchStarted = true;
     }
