@@ -490,7 +490,7 @@ ServerParam::init( const int & argc,
 
     if ( ! instance().M_conf_parser->parse( argc, argv ) )
     {
-        std::cout << "ServerParam:: init() argv[1] "<< argv[1] ;//<< " argv[2] " << argv[2] << "\n\n";
+        // std::cout << "ServerParam:: init() argv[1] "<< argv[1] ;//<< " argv[2] " << argv[2] << "\n\n";
         instance().M_builder->displayHelp();
         instance().clear();
         return false;
