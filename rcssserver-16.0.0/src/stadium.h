@@ -471,6 +471,8 @@ private:
 
     bool updatePlayersParam();
 
+    void checkPlayerParam();
+
 };
 
 #endif
