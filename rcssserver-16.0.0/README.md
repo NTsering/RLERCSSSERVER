@@ -1,11 +1,7 @@
-# RoboCup Soccer Server Simulator
+# Extended RoboCup Soccer Server Simulator
 
-[![CircleCI](https://circleci.com/gh/rcsoccersim/rcssserver/tree/master.svg?style=svg)](https://circleci.com/gh/rcsoccersim/rcssserver/tree/master)
-![License](https://img.shields.io/github/license/rcsoccersim/rcssserver.svg)
-
-![image](https://user-images.githubusercontent.com/1832537/49242985-f69a3c00-f3ea-11e8-97f5-9b0bfdfc4e1c.png)
-
-The RoboCup Soccer Simulator Server (rcssserver) is a research and educational tool for multi-agent systems and artificial intelligence. It allows 11 simulated autonomous robotic players to play soccer (football).
+The Extended RoboCup Soccer Simulator Server (rcssserver) is also a research and educational tool for multi-agent systems and artificial intelligence. It focuses towards testing and benchmarking skills based on skill-specific action situations and generating a dataset of results of partial gameplay for insight.
+It allows 11 simulated autonomous robotic players to play soccer (football) on a prebuilt situation configuration. A dataset of shoot situations is already available.   
 
 ## Quick Start
 
@@ -17,7 +13,7 @@ Make sure you have the required dependencies installed on your system:
 - bison
 - flex
 
-Download the latest rcssserver release in the [releases section](https://github.com/rcsoccersim/rcssserver/releases). Extract it and from the rcssserver directory execute:
+Download the extended rcssserver. Extract it and from the rcssserver directory execute:
 
 ```bash
 ./configure
@@ -26,7 +22,10 @@ make
 
 This will build the necessary binaries to get you up and running.
 
-`rcssserver/src/rcssserver` is the binary for the simulator server. The simulator
+
+Place a JSON file that represents a skill-specific situation configuration under the `rcssserver`, in parallel to `rcssserver/src/`
+
+`rcssserver/src/rcssserver` is the binary for the extended simulator server. The simulator
 server manages the actual simulation and comunicates with client programs that
 control the simulated robots.  To be able to run, the binary needs to find shared
 libraries which are created when you build rcssserver.  This means you must either
@@ -111,6 +110,12 @@ in your PATH. rcssserver will look in your home directory for the configuration 
 
 If these files do not exist they will be created and populated with default values.
 
+The server must be fed a situation configuration JSON file placed in your home directory.
+
+~/.rcssserver/slice.json
+
+If not found, a JSON error will be thrown to show it. 
+
 To start the sample client, type `./rcssclient` or `rcssclient` as above.  Then type 
 `(init sample)`.  This will connect the sample client to the server.  You can then 
 type in client command to move the client around the field. You will also need a 
@@ -126,4 +131,3 @@ If you installed the server and the monitor successfully, you can use the
 
 For bug reports, feature requests and latest updates, please open an issue or a pull request.
 
-> The RoboCup Soccer Server Maintainance Group
